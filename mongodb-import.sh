@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Load environment variables
 set -o allexport
 source .env set
