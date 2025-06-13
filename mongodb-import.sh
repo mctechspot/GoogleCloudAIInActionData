@@ -2,7 +2,7 @@
 
 # Load environment variables
 set -o allexport
-source .env set
+source .env
 +o allexport
 
 # Import orbit class data into mongo database

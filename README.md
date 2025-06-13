@@ -66,8 +66,8 @@ DB_PORT=Choose_an_appropriate_database_local_port_number
 Run the MongoDB container with the appropriate credentials that you have chosen.
 ```
 docker run --name mongodb -p <DB_PORT>:27017 \
--e MONGO_INITDB_ROOT_USERNAME=<DB_USER> \
--e MONGO_INITDB_ROOT_PASSWORD=<DB_PASSWORD>> \
+-e MONGODB_INITDB_ROOT_USERNAME=<DB_USER> \
+-e MONGODB_INITDB_ROOT_PASSWORD=<DB_PASSWORD> \
 -d mongodb/mongodb-community-server:latest
 ```
 
