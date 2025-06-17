@@ -1,10 +1,10 @@
 # Google Cloud AI In Action Data
-This repository hosts the source code to prepare asteroid data for the MongoDB challenge of the Google Cloud AI in Action Hackathon of June 2025. This project focuses on using MongoDB to store asteroid data for powerful search which is later used in the [application part of this project](https://github.com/mctechspot/GoogleCloudAIInActionApp) to generate detailed PDF reports using Google Gemini.
+This repository hosts the source code to prepare asteroid data for the MongoDB challenge of the Google Cloud AI in Action Hackathon of June 2025. This project focuses on using MongoDB to store asteroid data for powerful search which is later used in the [application part of this project](https://github.com/mctechspot/GoogleCloudAIInActionApp) to fetch asteroid data to be displayed on the user interface as well as to generate detailed PDF reports using Google Gemini.
  
 This repository provides the instructions to set up MongoDB, prepare the asteroid data and import the data into the database.
 
 ## A Huge Thank You to our Data Contributors
-Immense gratitude is extened to the contributors of this rich [asteroid dataset](https://www.kaggle.com/datasets/gauravkumar2525/asteroids-dataset) that we use in this source code. The data is valid as it comes from NASA’s databases, including the Jet Propulsion Laboratory (JPL) and the Minor Planet Center (MPC).
+Immense gratitude is extened to the contributors of this rich [asteroid dataset](https://www.kaggle.com/datasets/gauravkumar2525/asteroids-dataset) that we use in this project. The data is valid as it comes from NASA’s databases, including the Jet Propulsion Laboratory (JPL) and the Minor Planet Center (MPC).
 
 Download the zip file and extract the file called **asteroid_data.csv**.
 
@@ -140,6 +140,37 @@ Two JSON files should be generated in a directory called data.
 - \data
     - aseroids.json
     - orbit_class_types.json
+```
+
+These files respectively hold data to be populated in the **asteroids** and **orbit_class_types** collections of the database.
+
+An example of a document in the asteroids.json file should look as follows.
+```
+{
+    "_id": "3012393",
+    "name": "(1979 XB)",
+    "absolute_magnitude": "18.6",
+    "estimated_diameter_min": "0.5064714588",
+    "estimated_diameter_max": "1.1325046106",
+    "is_potentially_hazardous": "True",
+    "orbit_id": "13",
+    "orbit_determination_date": "2021-04-14 20:44:29",
+    "first_observation_date": "1979-12-11 00:00:00",
+    "last_observation_date": "1979-12-15 00:00:00",
+    "semi_major_axis": "2.228085656329666",
+    "inclination": "24.73412122397795",
+    "orbit_class_type": "a8b238e7-2906-4537-bb18-10ff570412a1"
+}
+```
+
+An example of a document in the orbit_class_types.json file should look as follows.
+```
+{
+    "_id": "a8b238e7-2906-4537-bb18-10ff570412a1",
+    "abbreviation": "APO",
+    "name": "Apollo-class Asteroid",
+    "description": "These asteroids have orbits that cross the Earth's orbit and have a semi-major axis greater than 1 AU."
+}
 ```
 
 ## Run Database Locally
