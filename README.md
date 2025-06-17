@@ -1,7 +1,12 @@
-# GoogleCloudAIInActionData
-This repository hosts the source code to prepare asteroid data for the 2025 Google Cloud AI in Action Hackathon. This project focuses on using MongoDB to store asteroid data for vector search and insights extracted with generative Artificial Intelligence.
+# Google Cloud AI In Action Data
+This repository hosts the source code to prepare asteroid data for the MongoDB challenge of the Google Cloud AI in Action Hackathon of June 2025. This project focuses on using MongoDB to store asteroid data for powerful search which is later used in the [application part of this project](https://github.com/mctechspot/GoogleCloudAIInActionApp) to generate detailed PDF reports using Google Gemini.
+ 
+This repository provides the instructions to set up MongoDB, prepare the asteroid data and import the data into the database.
 
-This repository provides the instructions to set up MongoDB, prepare the asteroid data and import the data in the database.
+## A Huge Thank You to our Data Contributors
+Immense gratitude is extened to the contributors of this rich [asteroid dataset](https://www.kaggle.com/datasets/gauravkumar2525/asteroids-dataset) that we use in this source code. The data is valid as it comes from NASA’s databases, including the Jet Propulsion Laboratory (JPL) and the Minor Planet Center (MPC).
+
+Download the zip file and extract the file called **asteroid_data.csv**.
 
 ## Environment Set-up
 Ensure that [git](https://git-scm.com/downloads) is installed on your device.
@@ -71,12 +76,17 @@ docker run --name mongodb -p <DB_PORT>:27017 \
 -d mongodb/mongodb-community-server:latest
 ```
 
+Alternatively, there is a single shell script called build-mongo-db-container.sh, that you may execute to pull the MongoDB image as well as to build the container so long as you have specified the environment variables in a .env file.
+```
+bash build-mongodb-container.sh
+```
+
 Ensure that the MongoDB container is running.
 ```
 docker ps | grep mongodb
 ```
 
-The output should look like this. Pay close attention to the status. It should say **up**.
+The output should look like this. Pay close attention to the status. It should say **Up**.
 ```
 <CONTAINER_ID>   mongodb/mongodb-community-server:latest   "python3 /usr/local/…"   <CREATED_AT>      Up <UP_TIME>    0.0.0.0:<DB_PORT>->27017/tcp   mongodb-container
 ```
@@ -99,7 +109,7 @@ use asteroids
 You will be switched to the database called asteroids. If you type the command ``show dbs`` to see the existing dbs, the  asteroids database will not be listed. A database is only listed when it is populated. We are about to do that now.
 
 ## Prepare Data
-Download the requisite data at this [link](https://www.kaggle.com/datasets/gauravkumar2525/asteroids-dataset). Extract the _asteroid_data.csv_ file and store it in a safe directory on your device.
+Download the requisite data at this [link](https://www.kaggle.com/datasets/gauravkumar2525/asteroids-dataset). Extract the **asteroid_data.csv** file and store it in a safe directory on your device.
 
 Create a .env file to store secrets.
 ```
@@ -110,7 +120,7 @@ chmod 744 .env
 
 Add relevant variables to .env file. Check the .env.example file to see the relevant variables that need to be added
 ```
-DATA_PATH=<Path_to_aseroids_data>
+DATA_PATH=<path_to_aseroids_data_csv_file>
 DB_HOST=0.0.0.0
 DB_USER=<Database_user> # DB_USER defined when running MongoDB container
 DB_PASSWORD=<Database_password> # DB_PASSWORD defined when running MongoDB container
@@ -132,9 +142,10 @@ Two JSON files should be generated in a directory called data.
     - orbit_class_types.json
 ```
 
-Once the JSON files have been generated, it is time to import them with the mongodb-import.sh script.
+## Run Database Locally
+Once the JSON files have been generated, it is time to import them to the local database with the mongodb-import-local.sh script.
 ```
-bash mongodb-import.sh
+bash mongodb-import-local.sh
 ```
 
 The output should show that data was imported into the orbit_class_types and asteroids collection of the asteroids database.
@@ -144,3 +155,17 @@ connected to: mongodb://[**REDACTED**]@0.0.0.0:<DB_PORT>/asteroids?authSource=ad
 <TIMESTAMP>    connected to: mongodb://[**REDACTED**]@0.0.0.0:<DB_PORT>/asteroids?authSource=admin
 <TIMESTAMP>    7100 document(s) imported successfully. 0 document(s) failed to import.
 ```
+
+## Deploy Live Database
+Create a [MongoDB account](https://mongodb.com) as you will need to utilise MongoDB Atlas to save data in the cloud.
+
+Create a free cluster, selecting the Google Cloud provider.
+
+Upon creating a cluster, you will be provided with a URI connection string to access the database. In the .env file of this repository, save this string in a variable called **LIVE_MONGODB_CONNECTION_STRING**.
+
+Execute the following script to load all the data to your live MongoDB cluster. This command will execute the mongodb-import-live.sh script to import the data to the live cluster.
+```
+bash mongodb-import-live.sh
+```
+
+Remember to save this connection string as you will need to reuse it as an environment variable called **MONGO_DB_CONNECTION_URI** in the Cloud Run deployment for the application part of this project. You may find the source code accompanied with a README file containing detailed instructions to execute the application at the [GoogleCloudAIInActionApp repository](https://github.com/mctechspot/GoogleCloudAIInActionApp).

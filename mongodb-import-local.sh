@@ -3,7 +3,7 @@
 # Load environment variables
 set -o allexport
 source .env
-+o allexport
+set +o allexport
 
 # Import orbit class data into mongo database
 mongoimport --uri="mongodb://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?authSource=admin" \
